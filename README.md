@@ -1,150 +1,108 @@
-Community Water Watch
-Overview
-Community Water Watch is an innovative platform designed to monitor and report water cleanliness issues in local communities. By leveraging AI-powered image analysis, blockchain for secure data logging, and a user-friendly web interface, this project empowers citizens to report littered water bodies, enabling authorities to take action. The system uses machine learning to classify reports as "Clean" or "Littered," stores verified data on a blockchain, and provides a dashboard for users and officials to track reports.
-Problem Statement
-Water pollution is a critical issue affecting ecosystems and public health. Many communities lack efficient systems to report and address water cleanliness problems. Community Water Watch solves this by providing a scalable, transparent, and community-driven solution to identify and manage water pollution through real-time reporting and AI-driven analysis.
-Features
+# Community-Water-Watch-Platform
 
-Image-Based Reporting: Users can upload images of water bodies, which are analyzed using a TensorFlow model to detect cleanliness levels.
-Blockchain Integration: Verified reports are stored on a blockchain using Web3, ensuring transparency and immutability.
-User Dashboard: Built with React, the dashboard displays user profiles, report statuses, and a Leaflet map for visualizing water issue locations.
-Cleanliness-Themed UI: The interface uses soft blues and greens to reflect the project's focus on clean water.
-OTP Authentication: Secure user registration and login via Twilio OTP for phone-based authentication.
-Database Management: MongoDB stores user data and reports (excluding "Clean" classifications, as per your requirement).
-API Endpoints: Flask-powered backend with endpoints like /predict for image analysis and /user/send_otp for authentication.
+A Flask-based web application for detecting and reporting water issues (e.g., leakage, scarcity) using image uploads and location data. Features include SMS notifications, MongoDB storage, and officer assignment for issue resolution.
 
-Technologies Used
+---
 
-Frontend: React, React-Leaflet, Tailwind CSS, Framer Motion
-Backend: Flask, Python
-AI/ML: TensorFlow, OpenCV
-Database: MongoDB
-Blockchain: Web3
-Authentication: Twilio for OTP
-Deployment: Local development (extendable to cloud platforms like GCP)
+## Features
+- Report water issues with images and location data.
+- Categorize issues (leakage, scarcity, others).
+- SMS notifications via Twilio.
+- MongoDB for data storage.
+- Pollution reports marked invalid with user verification.
+- Officer assignment for issue resolution.
 
-Installation
-Prerequisites
+---
+## Project demo
+https://youtu.be/-q-t_s-tOck
 
-Python 3.8+
-Node.js 16+
-MongoDB
-Git
-A Web3-compatible blockchain node (e.g., Ethereum testnet)
-Twilio account for OTP functionality
+## Tech Stack
+- *Backend*: Flask, Python
+- *Database*: MongoDB
+- *SMS*: Twilio API
+- *Machine Learning*: CNN model for water issue detection (water_cnn_model.h5)
 
-Setup Instructions
+---
 
-Clone the Repository:
-git clone https://github.com/your-username/community-water-watch.git
-cd community-water-watch
+## Project Structure
+- app.py: Main Flask application.
+- requirements.txt: Python dependencies.
+- water_cnn_model.h5: Pre-trained CNN model for water issue detection.
+- water_quality_model.pkl: Model for water quality prediction.
+- test_model.py: Script for testing the ML model.
+- train_model.py: Script for training the ML model.
+- .gitignore: Files and directories to ignore (e.g., .env, uploads/, resolved_images/).
 
+*Note*: Image upload directories (uploads/, resolved_images/) are ignored in production and not included in the repository.
 
-Backend Setup:
+---
 
-Install Python dependencies:pip install -r requirements.txt
+## Prerequisites
+Before setting up the project, ensure you have the following installed:
+- Python 3.8 or higher.
+- MongoDB (local or cloud instance like MongoDB Atlas).
+- A Twilio account for SMS notifications.
+- (Optional) A GROQ API key if using GROQ for additional features.
+- An SMTP server for email notifications (e.g., Gmail SMTP).
 
+---
 
-Configure environment variables in a .env file:FLASK_APP=app.py
-SECRET_KEY=your_secret_key
-MONGODB_URI=your_mongodb_uri
-TWILIO_ACCOUNT_SID=your_twilio_sid
-TWILIO_AUTH_TOKEN=your_twilio_token
-WEB3_PROVIDER=your_web3_provider_url
+## Setup
 
+Follow these steps to set up and run the WaterWatchX application:
 
-Run the Flask server:flask run
+1. *Clone the Repository*:
+   bash
+   git clone https://github.com/HemanthGK2004/WaterWatchX.git
+   cd WaterWatchX
+2. **Set Up a Virtual Environment (optional but recommended)**:
+   bash
+   python -m venv venv
+   source venv/bin/activate  # On Linux/Mac
+   venv\Scripts\activate
+3. *Install Dependencies:*
+   bash
+      pip install -r requirements.txt
+4. **Set up MongoDB:**
+- Install MongoDB locally or use a cloud instance like MongoDB Atlas.
+- Create a new database and collection for WaterWatchX data.
+- Update the app.py file with your MongoDB connection details.
+- Ensure MongoDB is running before proceeding.
+- Note the MongoDB URI for later use.
 
+5. **Configure Environment Variables**
+   - Create a .env file in the root directory:
+     bash
+        # .env
+      MONGODB_URI=mongodb://localhost:27017/waterwatchx  # Replace with your MongoDB URI
+      GROQ_API_KEY=your_groq_api_key                     # Optional, if using GROQ
+      TWILIO_SID=your_twilio_sid
+      TWILIO_AUTH_TOKEN=your_twilio_auth_token
+      TWILIO_PHONE=your_twilio_phone_number
+      SECRET_KEY=your_flask_secret_key                   # A random string for Flask session security
+      SMTP_HOST=smtp.gmail.com                           # Example: Gmail SMTP host
+      SMTP_PORT=587                                      # Example: Gmail SMTP port
+      SMTP_EMAIL=your_email@gmail.com                    # Your SMTP email
+      SMTP_PASSWORD=your_smtp_password                   # Your SMTP password or app-specific password
+6. *Run the Application*
+   ```bash
+      python app.py
+*Machine Learning Models*
+This project uses two machine learning models:
+1. water_cnn_model.h5
+A pre-trained Convolutional Neural Network (CNN) model for detecting water issues in images.
+Capable of categorizing issues such as leakage, scarcity, or others.
+2. water_quality_model.pkl
+A model for predicting water quality based on input data.
+Helps in determining if water is safe for use or requires attention.
 
-
-
-Frontend Setup:
-
-Navigate to the frontend directory:cd frontend
-
-
-Install Node.js dependencies:npm install
-
-
-Start the React development server:npm start
-
-
-
-
-MongoDB Setup:
-
-Ensure MongoDB is running locally or provide a cloud MongoDB URI.
-Initialize the database with the provided schema in db_schema.py.
-
-
-Blockchain Setup:
-
-Connect to a Web3 provider (e.g., Infura, Alchemy).
-Deploy the smart contract using the provided contracts/ directory.
-
-
-Testing:
-
-Run backend tests:python -m unittest discover tests
-
-
-Test image uploads and predictions using the /predict endpoint.
-
-
-
-Usage
-
-User Registration:
-
-Register via the /user/send_otp endpoint using a phone number.
-Verify the OTP to log in.
-
-
-Reporting Water Issues:
-
-Upload an image of a water body through the React frontend.
-The TensorFlow model classifies the image as "Clean" or "Littered."
-"Littered" reports are saved to MongoDB and logged on the blockchain.
-
-
-Viewing Reports:
-
-Access the dashboard to view your reports and their statuses.
-Use the interactive Leaflet map to see reported locations.
-
-
-
-Project Structure
-community-water-watch/
-├── backend/
-│   ├── app.py              # Flask application
-│   ├── models/            # TensorFlow model for image classification
-│   ├── contracts/         # Blockchain smart contracts
-│   ├── tests/             # Unit tests
-│   └── requirements.txt    # Python dependencies
-├── frontend/
-│   ├── src/
-│   │   ├── components/    # React components (e.g., UploadPage.jsx)
-│   │   ├── pages/         # Dashboard, map, and report pages
-│   │   └── assets/        # Images and styles
-│   ├── package.json       # Node.js dependencies
-│   └── tailwind.config.js # Tailwind CSS configuration
-├── README.md              # This file
-└── .env                   # Environment variables
-
-Contributing
-Contributions are welcome! To contribute:
-
-Fork the repository.
-Create a new branch (git checkout -b feature/your-feature).
-Commit your changes (git commit -m "Add your feature").
-Push to the branch (git push origin feature/your-feature).
-Open a Pull Request.
-
-Please ensure your code follows the project's coding standards and includes tests.
-
-
-Inspired by global water quality initiatives like GEO AquaWatch.
-Built with open-source tools and libraries.
-Special thanks to the community for feedback and support.
-
+## Usage
+*Reporting a Water Issue*
+1. Users can upload an image and provide location data via the web interface.
+2. The system categorizes the issue as leakage, scarcity, or others.
+*Issue Verification*
+1. Pollution reports are marked invalid and require manual user verification.
+*Notifications*
+1.Receive SMS updates via Twilio for issue status changes or resolutions.
+*Officer Assignment*
+1. Issues are automatically assigned to officers for resolution based on categorization and priority.
